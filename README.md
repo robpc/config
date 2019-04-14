@@ -2,6 +2,10 @@
 
 Simple configuration library for use in node and the browser. Inspired by [config](https://github.com/lorenwest/node-config), but doubles down on the [webpack use case](https://github.com/lorenwest/node-config/wiki/Webpack-Usage) and removes the dynamic require errors in webpack.
 
+## Installation
+
+    npm install --save @robpc/config
+
 ## Usage
 
     const config = require('@robpc/config/lib/file-loader');
