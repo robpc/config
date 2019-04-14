@@ -8,7 +8,13 @@
     "test": "jest"
   },
   "keywords": [
-    "configuration"
+    "conf",
+    "config",
+    "configuration",
+    "node-config",
+    "config-node",
+    "env",
+    "environment"
   ],
   "author": "Rob Cannon",
   "license": "ISC",
