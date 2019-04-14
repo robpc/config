@@ -1,0 +1,21 @@
+{
+  "name": "robpc-config-browser-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.hml",
+  "scripts": {
+    "build": "ROBPC_CONFIG_DEBUG=true NODE_ENV=production node_modules/.bin/webpack --mode production",
+    "start": "ROBPC_CONFIG_DEBUG=true NODE_ENV=production node_modules/.bin/webpack-dev-server --mode production"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@robpc/config": "file:../.."
+  },
+  "devDependencies": {
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.3.1"
+  }
+}

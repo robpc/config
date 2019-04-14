@@ -1,0 +1,6 @@
+{
+  "name": "Bob",
+  "greeting": {
+    "morning": "Good Morning"
+  }
+}
