@@ -37,6 +37,7 @@ module.exports = {
   },
   optimization: {
     minimize: false,
+    nodeEnv: false,
   },
   plugins: [
     new BannerPlugin(LICENSE),
