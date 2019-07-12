@@ -30,7 +30,10 @@ test('config core', () => {
   expect(config.get('vehicle.car.topSpeed')).toBe(80);
   expect(config.get('vehicle.truck.topSpeed')).toBe(undefined);
 
-  test.bob = 'barker';
+  const typeError = () => {
+    test.bob = 'barker';
+  };
+  expect(typeError).toThrow(TypeError);
 
   expect(config.get('bob')).toBe('evans');
 });

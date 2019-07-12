@@ -59,9 +59,8 @@ configs.forEach(conf => Object.assign(merged, conf));
 
 const finalConfig = merged;
 
-
 logger.log('Loading config from files:');
-loadedFiles.forEach(s => logger.log(` - ${s}`)); /* eslint-disable-line no-console */
+loadedFiles.forEach(s => logger.log(` - ${s}`));
 logger.log('config:', JSON.stringify(finalConfig, null, 2));
 
 module.exports = new Config(finalConfig);
