@@ -14,14 +14,14 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
+		module.exports = factory(require("fs"));
 	else if(typeof define === 'function' && define.amd)
-		define([], factory);
+		define(["fs"], factory);
 	else if(typeof exports === 'object')
-		exports["@robpc/config"] = factory();
+		exports["@robpc/config"] = factory(require("fs"));
 	else
-		root["@robpc/config"] = factory();
-})(global, function() {
+		root["@robpc/config"] = factory(root["fs"]);
+})(global, function(__WEBPACK_EXTERNAL_MODULE__2__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -105,7 +105,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -234,6 +234,13 @@ module.exports = Logger;
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__2__;
+
+/***/ }),
+/* 3 */,
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -250,26 +257,55 @@ module.exports = Logger;
  * CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
  * OR PERFORMANCE OF THIS SOFTWARE.
  */
+var fs = __webpack_require__(2);
+
 var Config = __webpack_require__(0);
 
 var Logger = __webpack_require__(1);
 
-var NODE_CONFIG = process.env.NODE_CONFIG;
-/* eslint-disable-line prefer-destructuring */
+var NODE_ENV = "production";
+var logger = new Logger('config-json-loader');
+var configNames = ['default'];
 
-var logger = new Logger('config-env-loader');
+if (NODE_ENV) {
+  configNames.push(NODE_ENV);
+}
 
-var loadConfig = function loadConfig() {
-  try {
-    return JSON.parse(NODE_CONFIG);
-  } catch (err) {
-    logger.error("Problem loading json from NODE_CONFIG: ".concat(NODE_CONFIG));
-    return null;
-  }
+var baseDir = './config';
+
+var toJsonFilename = function toJsonFilename(name) {
+  return "".concat(baseDir, "/").concat(name, ".json");
 };
 
-var config = loadConfig();
-var finalConfig = config || {};
+var loadedFiles = [];
+var configs = configNames.map(function (name) {
+  var jsonFilename = toJsonFilename(name);
+
+  if (fs.existsSync(jsonFilename)) {
+    try {
+      var str = fs.readFileSync(jsonFilename);
+      var json = JSON.parse(str);
+      loadedFiles.push("".concat(name, " -> ").concat(jsonFilename));
+      return json;
+    } catch (err) {
+      logger.error("Problem reading config file '".concat(jsonFilename), err);
+      return null;
+    }
+  }
+
+  return null;
+}).filter(function (config) {
+  return config;
+});
+var merged = {};
+configs.forEach(function (conf) {
+  return Object.assign(merged, conf);
+});
+var finalConfig = merged;
+logger.log('Loading config from files:');
+loadedFiles.forEach(function (s) {
+  return logger.log(" - ".concat(s));
+});
 logger.log('config:', JSON.stringify(finalConfig, null, 2));
 module.exports = new Config(finalConfig);
 

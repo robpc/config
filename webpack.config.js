@@ -13,7 +13,6 @@
  * OR PERFORMANCE OF THIS SOFTWARE.
  */
 const fs = require('fs');
-const path = require('path');
 
 const { BannerPlugin } = require('webpack');
 
@@ -21,14 +20,15 @@ const LICENSE = fs.readFileSync('./LICENSE', 'utf8');
 
 module.exports = {
   entry: {
-    index: './src/index.js',
-    'env-loader': './src/env-loader.js',
-    'file-loader': './src/file-loader.js',
+    main: './src/index.js',
+    env: './src/env-loader.js',
+    json: './src/json-loader.js',
+    yaml: './src/yaml-loader.js',
   },
   output: {
     library: '@robpc/config',
     libraryTarget: 'umd',
-    path: path.resolve(__dirname, 'lib'),
+    path: __dirname,
     filename: '[name].js',
   },
   target: 'node',
@@ -42,7 +42,7 @@ module.exports = {
     new BannerPlugin(LICENSE),
   ],
   externals: [
-    'fs',
+    'fs', 'js-yaml',
   ],
   module: {
     rules: [

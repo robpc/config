@@ -12,11 +12,31 @@
  * CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
  * OR PERFORMANCE OF THIS SOFTWARE.
  */
-/* eslint-disable no-console */
+const fs = require('fs');
 
-const config = require('@robpc/config/json');
+jest.mock('fs');
 
-const name = config.get('name');
-const morningGreeting = config.get('greeting.morning');
+const files = {
+  './config/default.yml':
+`bob: evans
+vehicle:
+  car:
+    topSpeed: 80`,
+  './config/test.yml':
+`vehicle:
+  car:
+    topSpeed: 120`,
+};
 
-console.log(`${morningGreeting}, ${name}!`);
+fs.existsSync.mockReturnValue(true);
+fs.readFileSync = jest.fn(filename => files[filename]);
+
+test('yaml loader', () => {
+  process.env.NODE_ENV = 'test';
+
+  const config = require('./yaml-loader'); /* eslint-disable-line global-require */
+
+  expect(config.get('bob')).toBe('evans');
+  expect(config.get('vehicle.car.topSpeed')).toBe(120);
+  expect(config.get('vehicle.truck.topSpeed')).toBe(undefined);
+});

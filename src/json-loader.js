@@ -19,7 +19,7 @@ const Logger = require('./logger');
 
 const { NODE_ENV } = process.env;
 
-const logger = new Logger('config-file-loader');
+const logger = new Logger('config-json-loader');
 
 const configNames = [
   'default',

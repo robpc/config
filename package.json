@@ -1,8 +1,8 @@
 {
   "name": "@robpc/config",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "Simple configuration library for use in node and the browser",
-  "main": "lib/index.js",
+  "main": "main.js",
   "scripts": {
     "build": "node_modules/.bin/webpack --mode production",
     "test": "jest"
@@ -30,6 +30,7 @@
     "webpack-cli": "^3.3.0"
   },
   "dependencies": {
-    "fs": "0.0.1-security"
+    "fs": "0.0.1-security",
+    "js-yaml": "^3.13.1"
   }
 }

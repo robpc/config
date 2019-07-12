@@ -14,14 +14,14 @@
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("fs"));
+		module.exports = factory(require("fs"), require("js-yaml"));
 	else if(typeof define === 'function' && define.amd)
-		define(["fs"], factory);
+		define(["fs", "js-yaml"], factory);
 	else if(typeof exports === 'object')
-		exports["@robpc/config"] = factory(require("fs"));
+		exports["@robpc/config"] = factory(require("fs"), require("js-yaml"));
 	else
-		root["@robpc/config"] = factory(root["fs"]);
-})(global, function(__WEBPACK_EXTERNAL_MODULE__4__) {
+		root["@robpc/config"] = factory(root["fs"], root["js-yaml"]);
+})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__6__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -105,7 +105,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -233,7 +233,12 @@ function () {
 module.exports = Logger;
 
 /***/ }),
-/* 2 */,
+/* 2 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__2__;
+
+/***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -251,14 +256,55 @@ module.exports = Logger;
  * CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
  * OR PERFORMANCE OF THIS SOFTWARE.
  */
-var fs = __webpack_require__(4);
+var Config = __webpack_require__(0);
+
+var Logger = __webpack_require__(1);
+
+var NODE_CONFIG = process.env.NODE_CONFIG;
+/* eslint-disable-line prefer-destructuring */
+
+var logger = new Logger('config-env-loader');
+
+var loadConfig = function loadConfig() {
+  try {
+    return JSON.parse(NODE_CONFIG);
+  } catch (err) {
+    logger.error("Problem loading json from NODE_CONFIG: ".concat(NODE_CONFIG));
+    return null;
+  }
+};
+
+var config = loadConfig();
+var finalConfig = config || {};
+logger.log('config:', JSON.stringify(finalConfig, null, 2));
+module.exports = new Config(finalConfig);
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+ * Copyright 2019 Rob Cannon
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any purpose with or
+ * without fee is hereby granted, provided that the above copyright notice and this
+ * permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO
+ * THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT
+ * SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR
+ * ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
+ * CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
+ * OR PERFORMANCE OF THIS SOFTWARE.
+ */
+var fs = __webpack_require__(2);
 
 var Config = __webpack_require__(0);
 
 var Logger = __webpack_require__(1);
 
 var NODE_ENV = "production";
-var logger = new Logger('config-file-loader');
+var logger = new Logger('config-json-loader');
 var configNames = ['default'];
 
 if (NODE_ENV) {
@@ -304,10 +350,112 @@ logger.log('config:', JSON.stringify(finalConfig, null, 2));
 module.exports = new Config(finalConfig);
 
 /***/ }),
-/* 4 */
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+ * Copyright 2019 Rob Cannon
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any purpose with or
+ * without fee is hereby granted, provided that the above copyright notice and this
+ * permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO
+ * THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT
+ * SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR
+ * ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
+ * CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
+ * OR PERFORMANCE OF THIS SOFTWARE.
+ */
+var fs = __webpack_require__(2);
+
+var yaml = __webpack_require__(6);
+
+var Config = __webpack_require__(0);
+
+var Logger = __webpack_require__(1);
+
+var NODE_ENV = "production";
+var logger = new Logger('config-yaml-loader');
+var configNames = ['default'];
+
+if (NODE_ENV) {
+  configNames.push(NODE_ENV);
+}
+
+var baseDir = './config';
+
+var toYamlFilename = function toYamlFilename(name) {
+  return "".concat(baseDir, "/").concat(name, ".yml");
+};
+
+var loadedFiles = [];
+var configs = configNames.map(function (name) {
+  var yamlFilename = toYamlFilename(name);
+
+  if (fs.existsSync(yamlFilename)) {
+    try {
+      var str = fs.readFileSync(yamlFilename, 'utf8');
+      var json = yaml.safeLoad(str);
+      loadedFiles.push("".concat(name, " -> ").concat(yamlFilename));
+      return json;
+    } catch (err) {
+      logger.error("Problem reading config file '".concat(yamlFilename), err);
+      return null;
+    }
+  }
+
+  return null;
+}).filter(function (config) {
+  return config;
+});
+var merged = {};
+configs.forEach(function (conf) {
+  return Object.assign(merged, conf);
+});
+var finalConfig = merged;
+logger.log('Loading config from files:');
+loadedFiles.forEach(function (s) {
+  return logger.log(" - ".concat(s));
+});
+logger.log('config:', JSON.stringify(finalConfig, null, 2));
+module.exports = new Config(finalConfig);
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__4__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__6__;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+ * Copyright 2019 Rob Cannon
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any purpose with or
+ * without fee is hereby granted, provided that the above copyright notice and this
+ * permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO
+ * THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT
+ * SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR
+ * ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
+ * CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
+ * OR PERFORMANCE OF THIS SOFTWARE.
+ */
+var envLoader = __webpack_require__(3);
+
+var jsonLoader = __webpack_require__(4);
+
+var yamlLoader = __webpack_require__(5);
+
+module.exports = {
+  env: envLoader,
+  json: jsonLoader,
+  yaml: yamlLoader
+};
 
 /***/ })
 /******/ ]);

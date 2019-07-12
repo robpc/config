@@ -8,19 +8,20 @@ Simple configuration library for use in node and the browser. Inspired by [confi
 
 ## Usage
 
-    const config = require('@robpc/config/lib/file-loader');
-    // const config = require('@robpc/config/lib/env-loader');
+    const config = require('@robpc/config/json');
+    // const config = require('@robpc/config/yaml');
+    // const config = require('@robpc/config/env');
 
     const name = config.get('name');
     const morningGreeting = config.get('greeting.morning');
 
     console.log(`${morningGreeting}, ${name}!`);
 
-## File Loader
+## JSON Loader
 
 _[Example Project](examples/node)_
 
-The `file-loader` loads configuration files from the `config/` directory at the root of the project. The library will load the `default.json` first followed by any json has a name matching the value in the `NODE_ENV` environmnent variable overriding previous values. So given the following configuration files:
+The `json-loader` loads configuration files from the `config/` directory at the root of the project. The library will load the `default.json` first followed by any json has a name matching the value in the `NODE_ENV` environmnent variable overriding previous values. So given the following configuration files:
 
 _config/default.json_
 
@@ -47,6 +48,8 @@ If the `NODE_ENV` is set to `production`, then the effective value of the config
     }
 
 Here the default name `Bob` is changed to `Rob` for production.
+
+_NOTE:_ The `yaml-loader` works in the same way but looks for `.yml` files instead of `.json`.
 
 ## Env Loader
 

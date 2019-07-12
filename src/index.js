@@ -13,9 +13,11 @@
  * OR PERFORMANCE OF THIS SOFTWARE.
  */
 const envLoader = require('./env-loader');
-const fileLoader = require('./file-loader');
+const jsonLoader = require('./json-loader');
+const yamlLoader = require('./yaml-loader');
 
 module.exports = {
   env: envLoader,
-  file: fileLoader,
+  json: jsonLoader,
+  yaml: yamlLoader,
 };
