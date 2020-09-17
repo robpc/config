@@ -30,7 +30,7 @@ if (NODE_ENV) {
 }
 
 const baseDir = './config';
-const toJsonFilename = name => `${baseDir}/${name}.json`;
+const toJsonFilename = (name) => `${baseDir}/${name}.json`;
 
 const loadedFiles = [];
 
@@ -51,16 +51,16 @@ const configs = configNames
 
     return null;
   })
-  .filter(config => config);
+  .filter((config) => config);
 
 const merged = {};
 
-configs.forEach(conf => Object.assign(merged, conf));
+configs.forEach((conf) => Object.assign(merged, conf));
 
 const finalConfig = merged;
 
 logger.log('Loading config from files:');
-loadedFiles.forEach(s => logger.log(` - ${s}`));
+loadedFiles.forEach((s) => logger.log(` - ${s}`));
 logger.log('config:', JSON.stringify(finalConfig, null, 2));
 
 module.exports = new Config(finalConfig);
