@@ -11,7 +11,8 @@
   ],
   "scripts": {
     "build": "node_modules/.bin/webpack --mode production",
-    "test": "jest"
+    "test": "jest",
+    "test-package": "npm run build && cd dist && npm pack"
   },
   "keywords": [
     "conf",
