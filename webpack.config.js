@@ -13,22 +13,26 @@
  * OR PERFORMANCE OF THIS SOFTWARE.
  */
 const fs = require('fs');
+const path = require('path');
 
 const { BannerPlugin } = require('webpack');
+const CopyPlugin = require('copy-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const LICENSE = fs.readFileSync('./LICENSE', 'utf8');
+const dist = 'dist';
 
 module.exports = {
   entry: {
-    main: './src/index.js',
-    env: './src/env-loader.js',
-    json: './src/json-loader.js',
-    yaml: './src/yaml-loader.js',
+    index: './src/index.js',
+    'env-loader': './src/env-loader.js',
+    'json-loader': './src/json-loader.js',
+    'yaml-loader': './src/yaml-loader.js',
   },
   output: {
     library: '@robpc/config',
     libraryTarget: 'umd',
-    path: __dirname,
+    path: path.join(__dirname, dist),
     filename: '[name].js',
   },
   target: 'node',
@@ -39,7 +43,17 @@ module.exports = {
     minimize: false,
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new BannerPlugin(LICENSE),
+    new CopyPlugin({
+      patterns: [
+        { from: 'package.json' },
+        { from: 'README.md' },
+        { from: 'LICENSE' },
+        { from: 'src/**/*.d.ts', flatten: true },
+        { from: 'examples', to: 'examples' },
+      ],
+    }),
   ],
   externals: [
     'fs', 'js-yaml',

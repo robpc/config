@@ -14,7 +14,7 @@
  */
 /* eslint-disable */
 
-const config = require('@robpc/config/env');
+const config = require('@robpc/config/env-loader');
 
 const name = config.get('name');
 const morningGreeting = config.get('greeting.morning');

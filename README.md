@@ -8,9 +8,9 @@ Simple configuration library for use in node and the browser. Inspired by [confi
 
 ## Usage
 
-    const config = require('@robpc/config/json');
-    // const config = require('@robpc/config/yaml');
-    // const config = require('@robpc/config/env');
+    const config = require('@robpc/config/json-loader');
+    // const config = require('@robpc/config/yaml-loader');
+    // const config = require('@robpc/config/env-loader');
 
     const name = config.get('name');
     const morningGreeting = config.get('greeting.morning');
@@ -63,13 +63,13 @@ _Example NODE_CONFIG_
 
 ## Webpack: Combining the Env and File Loaders
 
-_[Example](examples/browser/webpack.config.js)
+_[Example](examples/browser/webpack.config.js)_
 
-The file loader can be used to seed the `NODE_CONFIG` using webpack, allowing the benefits of merging configurations without adding all the files into the bundle. This process makes use of the `config.json` object which is a frozen object of the final configuration. With this method, the configuration files can be defined as intended for the `file-loader`, but using the `env-loader` for browser code.
+The file loader can be used to seed the `NODE_CONFIG` using webpack, allowing the benefits of merging configurations without adding all the files into the bundle. This process makes use of the `config.json` object which is a frozen object of the final configuration. With this method, the configuration files can be defined as intended for the `json-loader`, but using the `env-loader` for browser code.
 
     const { DefinePlugin } = require('webpack');
 
-    const config = require('@robpc/config/lib/file-loader');
+    const config = require('@robpc/config/json-loader');
 
     module.exports = {
       // ...
