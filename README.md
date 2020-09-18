@@ -75,7 +75,7 @@ The file loader can be used to seed the `NODE_CONFIG` using webpack, allowing th
       // ...
       plugins: [
         new DefinePlugin({
-          'process.env.NODE_CONFIG': JSON.stringify(JSON.stringify(config.json)),
+          'process.env.NODE_CONFIG': config.toEnv(),
         }),
         // ...
       ],

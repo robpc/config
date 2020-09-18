@@ -1,10 +1,13 @@
-import Config from './core'
+import Config from './core';
 
-type Loaders = {
-  json: Config;
-  env: Config;
-  yaml: Config;
+interface ConfigLoadOptions {
+  default?: string = 'default';
+  baseDir?: string = './config';
+}
+
+type ConfigFactory = {
+  load: (names: string | string[], options: ConfigLoadOptions) => Config
 };
 
-declare const index: Loaders;
+declare const index: ConfigFactory;
 export = index;

@@ -28,6 +28,10 @@ class Config {
   }
 
   get(path) { return undefSafe(path.split('.'), this.json); }
+
+  toEnv() {
+    return JSON.stringify(JSON.stringify(this.json));
+  }
 }
 
 module.exports = Config;
