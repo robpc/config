@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.hml",
   "scripts": {
-    "build": "ROBPC_CONFIG_DEBUG=true NODE_ENV=production node_modules/.bin/webpack --mode production",
-    "start": "ROBPC_CONFIG_DEBUG=true NODE_ENV=production node_modules/.bin/webpack-dev-server --mode production"
+    "build": "ROBPC_CONFIG_DEBUG=true APP_STAGE=production node_modules/.bin/webpack --mode production",
+    "start": "ROBPC_CONFIG_DEBUG=true APP_STAGE=production node_modules/.bin/webpack-dev-server --mode production"
   },
   "keywords": [],
   "author": "",

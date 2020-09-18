@@ -12,7 +12,13 @@
  * CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
  * OR PERFORMANCE OF THIS SOFTWARE.
  */
+
 const mutableMerge = (a, b) => {
+  if (Array.isArray(a) && Array.isArray(b)) {
+    // iterate over the array?
+    return b;
+  }
+
   if (typeof a === 'object' && typeof b === 'object') {
     const aKeys = Object.keys(a);
     const bKeys = Object.keys(b);
@@ -37,13 +43,15 @@ const mutableMerge = (a, b) => {
     return next;
   }
 
-  // if (Array.isArray(a) && Array.isArray(b)) {
-  //   // iterate over the array?
-  //   return b;
-  // }
-
   return b;
 };
+
+/**
+ * Does a deep merge of two values `a` and `b`. Makes a lot of assumptions about
+ * them being from json, or simple bag of values.
+ * @param {*} a
+ * @param {*} b
+ */
 const deepMerge = (a, b) => JSON.parse(JSON.stringify(mutableMerge(a, b)));
 
 module.exports = deepMerge;

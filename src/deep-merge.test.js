@@ -51,6 +51,24 @@ test('deepMerge shallow diff', () => {
   expect(config.json).toBe(10);
 });
 
+test('deepMerge arrays', () => {
+  const a = {
+    values: [
+      1, 2, 3, 4,
+    ],
+  };
+
+  const b = {
+    values: [
+      2, 3, 4,
+    ],
+  };
+
+  const config = new Config(deepMerge(a, b));
+
+  expect(config.get('values')).toStrictEqual(b.values);
+});
+
 test('deepMerge objects', () => {
   const a = {
     bob: 'evans',
@@ -70,8 +88,6 @@ test('deepMerge objects', () => {
   };
 
   const config = new Config(deepMerge(a, b));
-
-  console.log(config.json);
 
   expect(config.get('bob')).toBe('evans');
   expect(config.get('vehicle.car.topSpeed')).toBe(80);

@@ -15,9 +15,11 @@
 const path = require('path');
 const { DefinePlugin } = require('webpack');
 
-const config = require('@robpc/config/lib/file-loader');
+const configLoader = require('@robpc/config');
 
-const { ROBPC_CONFIG_DEBUG } = process.env;
+const { ROBPC_CONFIG_DEBUG, APP_STAGE } = process.env;
+
+const config = configLoader.load(APP_STAGE);
 
 module.exports = {
   entry: './src/index.js',
@@ -27,7 +29,7 @@ module.exports = {
   },
   plugins: [
     new DefinePlugin({
-      'process.env.NODE_CONFIG': JSON.stringify(JSON.stringify(config.json)),
+      'process.env.NODE_CONFIG': config.toEnv(),
       'process.env.ROBPC_CONFIG_DEBUG': JSON.stringify(ROBPC_CONFIG_DEBUG),
     }),
   ],
