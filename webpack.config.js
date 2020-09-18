@@ -16,19 +16,25 @@ const fs = require('fs');
 const path = require('path');
 
 const { BannerPlugin } = require('webpack');
+const CopyPlugin = require('copy-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+
 
 const LICENSE = fs.readFileSync('./LICENSE', 'utf8');
+const dist = 'dist';
 
 module.exports = {
   entry: {
     index: './src/index.js',
     'env-loader': './src/env-loader.js',
-    'file-loader': './src/file-loader.js',
+    'json-loader': './src/json-loader.js',
+    'yaml-loader': './src/yaml-loader.js',
   },
   output: {
     library: '@robpc/config',
     libraryTarget: 'umd',
-    path: path.resolve(__dirname, 'lib'),
+    path: path.join(__dirname, dist),
     filename: '[name].js',
   },
   target: 'node',
@@ -40,10 +46,27 @@ module.exports = {
     nodeEnv: false,
   },
   plugins: [
+    new CleanWebpackPlugin(),
+    new TerserPlugin({
+      terserOptions: {
+        format: {
+          comments: false,
+        },
+      },
+    }),
     new BannerPlugin(LICENSE),
+    new CopyPlugin({
+      patterns: [
+        { from: 'package.json' },
+        { from: 'README.md' },
+        { from: 'LICENSE' },
+        { from: 'src/**/*.d.ts', flatten: true },
+        { from: 'examples', to: 'examples' },
+      ],
+    }),
   ],
   externals: [
-    'fs',
+    'fs', 'js-yaml',
   ],
   module: {
     rules: [

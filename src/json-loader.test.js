@@ -37,10 +37,10 @@ const files = {
 fs.existsSync.mockReturnValue(true);
 fs.readFileSync = jest.fn(filename => JSON.stringify(files[filename]));
 
-test('file loader', () => {
+test('json loader', () => {
   process.env.NODE_ENV = 'test';
 
-  const config = require('./file-loader'); /* eslint-disable-line global-require */
+  const config = require('./json-loader'); /* eslint-disable-line global-require */
 
   expect(config.get('bob')).toBe('evans');
   expect(config.get('vehicle.car.topSpeed')).toBe(120);

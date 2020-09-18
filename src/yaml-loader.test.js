@@ -12,26 +12,31 @@
  * CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
  * OR PERFORMANCE OF THIS SOFTWARE.
  */
-const undefSafe = (paths, data) => {
-  const newData = data[paths[0]];
+const fs = require('fs');
 
-  if (typeof newData === 'undefined' || paths.length === 1) {
-    return newData;
-  }
+jest.mock('fs');
 
-  return undefSafe(paths.slice(1), newData);
+const files = {
+  './config/default.yml':
+`bob: evans
+vehicle:
+  car:
+    topSpeed: 80`,
+  './config/test.yml':
+`vehicle:
+  car:
+    topSpeed: 120`,
 };
 
-class Config {
-  constructor(config) {
-    this.json = Object.freeze(config || {});
-  }
+fs.existsSync.mockReturnValue(true);
+fs.readFileSync = jest.fn((filename) => files[filename]);
 
-  get(path) { return undefSafe(path.split('.'), this.json); }
+test('yaml loader', () => {
+  process.env.NODE_ENV = 'test';
 
-  toEnv() {
-    return JSON.stringify(JSON.stringify(this.json));
-  }
-}
+  const config = require('./yaml-loader'); /* eslint-disable-line global-require */
 
-module.exports = Config;
+  expect(config.get('bob')).toBe('evans');
+  expect(config.get('vehicle.car.topSpeed')).toBe(120);
+  expect(config.get('vehicle.truck.topSpeed')).toBe(undefined);
+});

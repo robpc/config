@@ -14,7 +14,7 @@
  */
 /* eslint-disable no-console */
 
-const config = require('@robpc/config/lib/file-loader');
+const config = require('@robpc/config/json-loader');
 
 const name = config.get('name');
 const morningGreeting = config.get('greeting.morning');
