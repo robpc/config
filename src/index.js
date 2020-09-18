@@ -18,6 +18,8 @@ const yaml = require('js-yaml');
 const Config = require('./core');
 const Logger = require('./logger');
 
+const deepMerge = require('./deep-merge');
+
 const logger = new Logger('config-loader');
 
 const toFilename = (baseDir, name, ext) => `${baseDir}/${name}.${ext}`;
@@ -112,9 +114,7 @@ const load = (names, options) => {
   logger.log('Loading config from files:');
   loadedFiles.forEach((s) => logger.log(` - ${s}`));
 
-  const merged = {};
-
-  configs.forEach((conf) => Object.assign(merged, conf));
+  const merged = configs.reduce(deepMerge, {});
 
   const finalConfig = merged;
 

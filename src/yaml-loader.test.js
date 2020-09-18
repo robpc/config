@@ -29,7 +29,7 @@ vehicle:
 };
 
 fs.existsSync.mockReturnValue(true);
-fs.readFileSync = jest.fn(filename => files[filename]);
+fs.readFileSync = jest.fn((filename) => files[filename]);
 
 test('yaml loader', () => {
   process.env.NODE_ENV = 'test';
