@@ -20,7 +20,6 @@ const CopyPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
-
 const LICENSE = fs.readFileSync('./LICENSE', 'utf8');
 const dist = 'dist';
 

@@ -1,6 +1,6 @@
 # @robpc/config
 
-_NOTE: Recently updated to v2, for v1 see [v1/README.md](https://github.com/robpc/config/blob/v1/README.md).
+_NOTE: Recently updated to v2, for v1 see [v1/README.md](https://github.com/robpc/config/blob/v1/README.md)._
 
 Simple configuration library for use in node and the browser. Inspired by [config](https://github.com/lorenwest/node-config), but doubles down on the [webpack use case](https://github.com/lorenwest/node-config/wiki/Webpack-Usage) and removes the dynamic require errors in webpack.
 
@@ -90,26 +90,28 @@ in the following order:
 * `${baseDir}/${name}.json`
 * `process.env[name]`
 
-    const configLoader = require('@robpc/config');
+```
+const configLoader = require('@robpc/config');
 
-    const deployStage = process.env.NODE_ENV;
+const deployStage = process.env.NODE_ENV;
 
-    // Can be a string or an array of strings that list the configs
-    // to be loaded. The later configs will take higher precedence
-    const configNames = [deployStage, 'APP_CONFIG_OVERRIDE'];
+// Can be a string or an array of strings that list the configs
+// to be loaded. The later configs will take higher precedence
+const configNames = [deployStage, 'APP_CONFIG_OVERRIDE'];
 
-    // (Optional) ability to override the following defaults
-    const configOptions = {
-      baseDir: './config', // directory with configuration files
-      default: 'default', // base config to be included by default
-    }
+// (Optional) ability to override the following defaults
+const configOptions = {
+  baseDir: './config', // directory with configuration files
+  default: 'default', // base config to be included by default
+}
 
-    const config = configLoader.load(process.env.NODE_ENV, options);
+const config = configLoader.load(process.env.NODE_ENV, options);
 
-    const name = config.get('name');
-    const morningGreeting = config.get('greeting.morning');
+const name = config.get('name');
+const morningGreeting = config.get('greeting.morning');
 
-    console.log(`${morningGreeting}, ${name}!`);
+console.log(`${morningGreeting}, ${name}!`);
+```
 
 ## Webpack
 
@@ -135,7 +137,7 @@ The file loader can be used to seed the `NODE_CONFIG` using webpack, allowing th
     };
 
 _NOTE: The `json-loader` and `yaml-loader` can also be used in this way though it is not
-recommended since they use the `NODE_ENV` environment which can cause issues.
+recommended since they use the `NODE_ENV` environment which can cause issues._
 
 This would also allow frontend and backend code to use the same configuration files and allow sharing of values between them.
 
@@ -145,25 +147,25 @@ A more advanced usage allows sharing a subset of values between frontend and bac
 
 _config/common.yml_
 
-  validation:
-    minItems: 2
-    maxItems: 10
+    validation:
+      minItems: 2
+      maxItems: 10
 
 _config/ui.yml_
 
-  auth:
-    api: /api/v1/auth
+    auth:
+      api: /api/v1/auth
 
 _config/server.dev.yml_
 
-  auth:
-    token: 123434sdFASDFqwe$$%2323RQWER$qr32
+    auth:
+      token: 123434sdFASDFqwe$$%2323RQWER$qr32
 
 _config/ui.dev.yml_
 
-  auth:
-    alwaysAdminUsers:
-      - robpc
+    auth:
+      alwaysAdminUsers:
+        - robpc
 
 _server/config.js_
 
@@ -171,7 +173,10 @@ _server/config.js_
 
     const { APP_STAGE } = process.env;
 
-    module.exports = configLoader.load(['server', `server.${APP_STAGE}`]), { default: 'common' });
+    module.exports = configLoader.load(
+      ['server', `server.${APP_STAGE}`]),
+      { default: 'common' },
+    );
 
 _app/webpack.config.js_
 
