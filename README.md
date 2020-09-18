@@ -1,5 +1,7 @@
 # @robpc/config
 
+_NOTE: Recently updated to v2, for v1 see [v1/README.md](https://github.com/robpc/config/blob/v1/README.md).
+
 Simple configuration library for use in node and the browser. Inspired by [config](https://github.com/lorenwest/node-config), but doubles down on the [webpack use case](https://github.com/lorenwest/node-config/wiki/Webpack-Usage) and removes the dynamic require errors in webpack.
 
 ## Installation
