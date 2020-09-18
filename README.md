@@ -141,7 +141,7 @@ recommended since they use the `NODE_ENV` environment which can cause issues._
 
 This would also allow frontend and backend code to use the same configuration files and allow sharing of values between them.
 
-### Adavanced Example
+### Advanced Example
 
 A more advanced usage allows sharing a subset of values between frontend and backend
 
@@ -186,7 +186,10 @@ _app/webpack.config.js_
 
     const { APP_STAGE } = process.env;
 
-    const config = configLoader.load(['ui', `ui.${APP_STAGE}`]), { default: 'common' });
+    const config = configLoader.load(
+      ['ui', `ui.${APP_STAGE}`]),
+      { default: 'common' },
+    );
 
     module.exports = {
       // ...
