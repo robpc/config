@@ -37,9 +37,9 @@ module.exports = {
     filename: '[name].js',
   },
   target: 'node',
-  node: {
-    fs: 'empty',
-  },
+  // node: {
+  //   fs: 'empty',
+  // },
   optimization: {
     minimize: false,
     nodeEnv: false,
@@ -59,7 +59,7 @@ module.exports = {
         { from: 'package.json' },
         { from: 'README.md' },
         { from: 'LICENSE' },
-        { from: 'src/**/*.d.ts', flatten: true },
+        { from: '*.d.ts', context: 'src/' },
       ],
     }),
   ],

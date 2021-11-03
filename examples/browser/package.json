@@ -4,18 +4,21 @@
   "description": "",
   "main": "index.hml",
   "scripts": {
-    "build": "ROBPC_CONFIG_DEBUG=true APP_STAGE=production node_modules/.bin/webpack --mode production",
-    "start": "ROBPC_CONFIG_DEBUG=true APP_STAGE=production node_modules/.bin/webpack-dev-server --mode production"
+    "build": "cross-env ROBPC_CONFIG_DEBUG=true APP_STAGE=production webpack --mode production",
+    "start": "cross-env ROBPC_CONFIG_DEBUG=true APP_STAGE=production webpack-dev-server --mode production",
+    "watch": "cross-env ROBPC_CONFIG_DEBUG=true APP_STAGE=production webpack --watch  --mode production"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@robpc/config": "file:../.."
+    "@robpc/config": "file:../../dist"
   },
   "devDependencies": {
-    "webpack": "^4.30.0",
-    "webpack-cli": "^3.3.0",
-    "webpack-dev-server": "^3.3.1"
+    "copy-webpack-plugin": "^9.0.1",
+    "cross-env": "^7.0.3",
+    "webpack": "^5.61.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.4.0"
   }
 }
