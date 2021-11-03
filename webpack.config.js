@@ -60,7 +60,6 @@ module.exports = {
         { from: 'README.md' },
         { from: 'LICENSE' },
         { from: 'src/**/*.d.ts', flatten: true },
-        { from: 'examples', to: 'examples' },
       ],
     }),
   ],

@@ -5,12 +5,12 @@
   "main": "index.js",
   "types": "index.d.ts",
   "files": [
+    "index.js",
     "*-loader.js",
-    "*.d.ts",
-    "examples"
+    "*.d.ts"
   ],
   "scripts": {
-    "build": "node_modules/.bin/webpack --mode production",
+    "build": "webpack --mode production",
     "test": "jest",
     "test-package": "npm run build && cd dist && npm pack"
   },
