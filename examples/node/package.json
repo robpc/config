@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ROBPC_CONFIG_DEBUG=true NODE_ENV=production node index.js"
+    "start": "cross-env ROBPC_CONFIG_DEBUG=true NODE_ENV=production node index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@robpc/config": "file:../.."
+    "@robpc/config": "file:../../dist"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }

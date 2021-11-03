@@ -28,7 +28,7 @@ const loadYamlFile = (filename) => {
   if (fs.existsSync(filename)) {
     try {
       const str = fs.readFileSync(filename, 'utf8');
-      const json = yaml.safeLoad(str);
+      const json = yaml.load(str);
       return json;
     } catch (err) {
       logger.error(`Problem reading yaml file '${filename}`, err);

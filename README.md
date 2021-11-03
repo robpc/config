@@ -206,4 +206,4 @@ _app/index.js_
     const config = require('@robpc/config/env-loader');
 
     const authApi = config.get('auth.api');
-    const validation = config.get('validation);
+    const validation = config.get('validation');

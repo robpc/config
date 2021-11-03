@@ -14,6 +14,7 @@
  */
 const path = require('path');
 const { DefinePlugin } = require('webpack');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const configLoader = require('@robpc/config');
 
@@ -28,6 +29,11 @@ module.exports = {
     filename: 'index.js',
   },
   plugins: [
+    new CopyPlugin({
+      patterns: [
+        { from: 'index.html' },
+      ],
+    }),
     new DefinePlugin({
       'process.env.NODE_CONFIG': config.toEnv(),
       'process.env.ROBPC_CONFIG_DEBUG': JSON.stringify(ROBPC_CONFIG_DEBUG),
