@@ -41,7 +41,7 @@ const configs = configNames
     if (fs.existsSync(yamlFilename)) {
       try {
         const str = fs.readFileSync(yamlFilename, 'utf8');
-        const json = yaml.safeLoad(str);
+        const json = yaml.load(str);
         loadedFiles.push(`${name} -> ${yamlFilename}`);
         return json;
       } catch (err) {
